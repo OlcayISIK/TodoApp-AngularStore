@@ -1,0 +1,49 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <div style="margin-top:30px;">
+                <div class="card-shadow">
+                    
+                    <h3 style="text-align:center">Todos</h3>
+
+                    <div *ngIf="errorMessage$ | async as error" class="alert alert-danger">
+                        Error: {{ error }}
+                    </div>
+
+                    <input type="text" class="form-control input-lg" name="title" [(ngModel)]="newTodo.title" #title="ngModel"
+                        minlength="1" maxlength="25" required placeholder="What needs to be done?" (keyup.enter)="addTodo()">
+
+                    <br>
+
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" (change)="showIdChanged($event.target.checked)" [checked]="showTodoId$ | async">
+                            <b>Show Id</b>
+                        </label>
+                    </div>
+
+                    <div class="card">
+                        <table class="table">
+                            <tbody>
+                                <tr *ngFor="let todo of todos$ | async; let i = index">
+                                    <td *ngIf="showTodoId$ | async">{{todo.id}}</td>
+                                    <td>
+                                        <div class="checkbox" style="margin:0">
+                                            <label>
+                                                <input type="checkbox" id='I{{i}}' [(ngModel)]="todo.complete" #complete="ngModel"
+                                                    [checked]="todo.complete == true" (change)="updateTodo(todo)"><span
+                                                    [ngStyle]="{'text-decoration': todo.complete === true ? 'line-through' : 'none' }">{{todo.title}}</span>
+                                            </label>
+                                        </div>
+                                    </td>
+                                    <td><button (click)="deleteTodo(todo)" class="btn btn-default btn-xs pull-right"><i
+                                                class="fa fa-times fa-fw" aria-hidden="true"></i></button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
